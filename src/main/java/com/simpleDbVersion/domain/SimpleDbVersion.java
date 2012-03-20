@@ -16,9 +16,8 @@ public class SimpleDbVersion {
 	}
 	
 	public void install() {
-		if (!dbIsOutOfVersion()) return;
-		upgradeCurrentVersion();
-		installNewVersions();
+		if (scriptsOfCurrentVersionIsOutdate()) upgradeCurrentVersion();
+		if (versionIsOutdate()) installNewVersions();
 	}
 	
 	private void upgradeCurrentVersion() {
@@ -26,14 +25,19 @@ public class SimpleDbVersion {
 	}
 	
 	private void installNewVersions() {
-		for (Long version : versionManager.availablesVersions())
-			if (version > versionRepository.currentVersion()) versionInstaller.installFullVersion(version);
+		versionInstaller.installFullVersionFrom(versionRepository.currentVersion());
 	}
 
-	public boolean dbIsOutOfVersion() {
-		if (versionRepository.currentVersion() == null) return true;
-		if (versionRepository.currentVersion() < versionManager.newestVersion()) return true;
-		return versionScriptManager.newestScript(versionRepository.currentVersion()) > versionRepository.lastScript();
+	public boolean versionIsOutdate() {
+		return neverWasInstalled() || versionRepository.currentVersion() < versionManager.newestVersion();
+	}
+	
+	public boolean scriptsOfCurrentVersionIsOutdate() {
+		return !neverWasInstalled() && versionScriptManager.newestScript(versionRepository.currentVersion()) > versionRepository.lastScript();
+	}
+	
+	public boolean neverWasInstalled() {
+		return versionRepository.currentVersion() == null;
 	}
 
 }

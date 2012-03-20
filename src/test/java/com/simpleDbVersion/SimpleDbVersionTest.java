@@ -33,7 +33,9 @@ public class SimpleDbVersionTest {
 		when(versionRepository.currentVersion()).thenReturn(null);
 		when(versionManager.newestVersion()).thenReturn(1L);
 		
-		assertTrue(simpleDbVersion.dbIsOutOfVersion());
+		assertTrue(simpleDbVersion.neverWasInstalled()); 
+		assertTrue(simpleDbVersion.versionIsOutdate());
+		assertFalse(simpleDbVersion.scriptsOfCurrentVersionIsOutdate());
 	}
 	
 	@Test
@@ -41,7 +43,9 @@ public class SimpleDbVersionTest {
 		when(versionRepository.currentVersion()).thenReturn(1L);
 		when(versionManager.newestVersion()).thenReturn(2L);
 		
-		assertTrue(simpleDbVersion.dbIsOutOfVersion());
+		assertTrue(simpleDbVersion.versionIsOutdate());
+		assertFalse(simpleDbVersion.neverWasInstalled()); 
+		assertFalse(simpleDbVersion.scriptsOfCurrentVersionIsOutdate());
 	}
 	
 	@Test
@@ -52,7 +56,8 @@ public class SimpleDbVersionTest {
 		when(versionRepository.lastScript()).thenReturn(5L);
 		when(versionScriptManager.newestScript(1L)).thenReturn(6L);
 		
-		assertTrue(simpleDbVersion.dbIsOutOfVersion());
+		assertFalse(simpleDbVersion.versionIsOutdate());
+		assertTrue(simpleDbVersion.scriptsOfCurrentVersionIsOutdate());
 	}
 	
 	@Test
@@ -63,7 +68,9 @@ public class SimpleDbVersionTest {
 		when(versionRepository.lastScript()).thenReturn(6L);
 		when(versionScriptManager.newestScript(1L)).thenReturn(6L);
 		
-		assertFalse(simpleDbVersion.dbIsOutOfVersion());
+		assertFalse(simpleDbVersion.neverWasInstalled());
+		assertFalse(simpleDbVersion.versionIsOutdate());
+		assertFalse(simpleDbVersion.scriptsOfCurrentVersionIsOutdate());
 	}
 	
 	@Test
@@ -74,7 +81,7 @@ public class SimpleDbVersionTest {
 		simpleDbVersion.install();
 		
 		verify(versionInstaller, never()).upgradeVersion(anyLong(), anyLong());	
-		verify(versionInstaller, never()).installFullVersion(anyLong());
+		verify(versionInstaller, never()).installFullVersionFrom(anyLong());
 	}
 	
 	@Test
@@ -85,7 +92,7 @@ public class SimpleDbVersionTest {
 		
 		simpleDbVersion.install();
 		
-		verify(versionInstaller, times(1)).installFullVersion(anyLong());		
+		verify(versionInstaller, times(1)).installFullVersionFrom(anyLong());		
 	}
 
 }
