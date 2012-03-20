@@ -5,18 +5,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.simpleDbVersion.domain.VersionScriptManager;
+import com.simpleDbVersion.domain.ScriptManager;
 
-public class VersionFileScriptManager implements VersionScriptManager {
+public class ScriptFileManager implements ScriptManager<File> {
 	
 	private final File installDir;
 
-	public VersionFileScriptManager(File installDir) {
+	public ScriptFileManager(File installDir) {
 		this.installDir = installDir;
 	}
 	
+	@Override
 	public Long newestScript(Long version) {
 		return newestScriptInTheFolder( getVersionFolder(version) );
+	}
+	
+	@Override
+	public File[] availablesScripts(Long version) {
+		return getVersionFolder(version).listFiles();
 	}
 	
 	private Long newestScriptInTheFolder(File folder) {
@@ -38,10 +44,10 @@ public class VersionFileScriptManager implements VersionScriptManager {
 		
 		return scripts;
 	}
-
+	
 	private File getVersionFolder(Long version) {
 		File versionFolder = new File(installDir.getPath() + File.separator + version.toString());
 		return (!versionFolder.exists() || versionFolder.listFiles().length == 0) ? null : versionFolder;
 	}
-
+	
 }

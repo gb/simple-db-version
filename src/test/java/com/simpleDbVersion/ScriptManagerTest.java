@@ -10,15 +10,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.simpleDbVersion.domain.VersionScriptManager;
-import com.simpleDbVersion.infra.VersionFileScriptManager;
+import com.simpleDbVersion.domain.ScriptManager;
+import com.simpleDbVersion.infra.ScriptFileManager;
 
-public class VersionScriptManagerTest {
+public class ScriptManagerTest {
 	
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
     
-    private VersionScriptManager versionScriptManager;
+    private ScriptManager<?> versionScriptManager;
     
     @Before
     public void setUp() throws IOException {
@@ -30,7 +30,7 @@ public class VersionScriptManagerTest {
     	new File(version, "3").createNewFile();
     	new File(version, "2").createNewFile();
     	
-    	versionScriptManager = new VersionFileScriptManager(testFolder.getRoot());
+    	versionScriptManager = new ScriptFileManager(testFolder.getRoot());
     }
     
     @Test

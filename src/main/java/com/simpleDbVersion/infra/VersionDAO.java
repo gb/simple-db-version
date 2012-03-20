@@ -14,10 +14,12 @@ public class VersionDAO implements VersionRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	@Override
 	public Long currentVersion() {
 		return this.jdbcTemplate.queryForLong(LAST_VERSION_SQL);
 	}
 
+	@Override
 	public Long lastScript() {
 		return this.jdbcTemplate.queryForLong(LAST_SCRIPT_SQL);
 	}

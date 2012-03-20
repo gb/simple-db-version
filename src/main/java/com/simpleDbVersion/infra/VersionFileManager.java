@@ -14,6 +14,16 @@ public class VersionFileManager implements VersionManager {
 	public VersionFileManager(File scriptsDir) {
 		loadVersions(scriptsDir);
 	}
+	
+	@Override
+	public Long newestVersion() {
+		return versions.get(versions.size() - 1);
+	}
+	
+	@Override
+	public List<Long> availablesVersions() {
+		return Collections.unmodifiableList(versions);
+	}
 
 	private void loadVersions(File scriptsDir) {
 		for (File file : scriptsDir.listFiles()) addVersion(file);
@@ -26,14 +36,6 @@ public class VersionFileManager implements VersionManager {
 	
 	private Long getVersionName(File file) {
 		return Long.parseLong(file.getName());
-	}
-
-	public Long newestVersion() {
-		return versions.get(versions.size() - 1);
-	}
-
-	public List<Long> availablesVersions() {
-		return Collections.unmodifiableList(versions);
 	}
 
 }

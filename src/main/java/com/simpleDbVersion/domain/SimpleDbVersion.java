@@ -4,11 +4,11 @@ public class SimpleDbVersion {
 	
 	private final VersionRepository versionRepository;
 	private final VersionManager versionManager;
-	private final VersionScriptManager versionScriptManager;
+	private final ScriptManager<?> versionScriptManager;
 	private final VersionInstaller versionInstaller;
 	
 	public SimpleDbVersion(VersionRepository versionRepository, VersionManager versionManager, 
-			VersionScriptManager versionScriptManager, VersionInstaller versionInstaller) {
+			ScriptManager<?> versionScriptManager, VersionInstaller versionInstaller) {
 		this.versionRepository = versionRepository;
 		this.versionManager = versionManager;
 		this.versionScriptManager = versionScriptManager;
@@ -25,7 +25,7 @@ public class SimpleDbVersion {
 	}
 	
 	private void installNewVersions() {
-		versionInstaller.installFullVersionFrom(versionRepository.currentVersion());
+		versionInstaller.installFullVersionsFrom(versionRepository.currentVersion());
 	}
 
 	public boolean versionIsOutdate() {

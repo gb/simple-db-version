@@ -12,7 +12,7 @@ import com.simpleDbVersion.domain.SimpleDbVersion;
 import com.simpleDbVersion.domain.VersionInstaller;
 import com.simpleDbVersion.domain.VersionManager;
 import com.simpleDbVersion.domain.VersionRepository;
-import com.simpleDbVersion.domain.VersionScriptManager;
+import com.simpleDbVersion.domain.ScriptManager;
 
 public class SimpleDbVersionTest {
 	
@@ -20,7 +20,7 @@ public class SimpleDbVersionTest {
 	
 	private VersionRepository versionRepository = mock(VersionRepository.class);
 	private VersionManager versionManager = mock(VersionManager.class);
-	private VersionScriptManager versionScriptManager = mock(VersionScriptManager.class);
+	private ScriptManager<?> versionScriptManager = mock(ScriptManager.class);
 	private VersionInstaller versionInstaller = mock(VersionInstaller.class);
 	
 	@Before
@@ -81,7 +81,7 @@ public class SimpleDbVersionTest {
 		simpleDbVersion.install();
 		
 		verify(versionInstaller, never()).upgradeVersion(anyLong(), anyLong());	
-		verify(versionInstaller, never()).installFullVersionFrom(anyLong());
+		verify(versionInstaller, never()).installFullVersionsFrom(anyLong());
 	}
 	
 	@Test
@@ -92,7 +92,7 @@ public class SimpleDbVersionTest {
 		
 		simpleDbVersion.install();
 		
-		verify(versionInstaller, times(1)).installFullVersionFrom(anyLong());		
+		verify(versionInstaller, times(1)).installFullVersionsFrom(anyLong());		
 	}
 
 }

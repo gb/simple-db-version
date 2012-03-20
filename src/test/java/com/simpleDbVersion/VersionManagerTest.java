@@ -14,7 +14,7 @@ import org.junit.rules.TemporaryFolder;
 import com.simpleDbVersion.domain.VersionManager;
 import com.simpleDbVersion.infra.VersionFileManager;
 
-public class VersionFileManagerTest {
+public class VersionManagerTest {
 	
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
