@@ -16,15 +16,17 @@ public class SimpleDbVersion {
 	}
 	
 	public void install() {
-		if (scriptsOfCurrentVersionIsOutdate()) upgradeCurrentVersion();
-		if (versionIsOutdate()) installNewVersions();
+		installNewScriptsOfCurrentVersion();
+		upgradeToNewestVersion();
 	}
 	
-	private void upgradeCurrentVersion() {
+	private void installNewScriptsOfCurrentVersion() {
+		if (!scriptsOfCurrentVersionIsOutdate()) return;
 		versionInstaller.upgradeVersion(versionRepository.currentVersion(), versionRepository.lastScript());
 	}
 	
-	private void installNewVersions() {
+	private void upgradeToNewestVersion() {
+		if (!versionIsOutdate()) return;
 		versionInstaller.installFullVersionsFrom(versionRepository.currentVersion());
 	}
 
