@@ -3,6 +3,7 @@ package com.simpleDbVersion.infra;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.sql.DataSource;
 
@@ -30,7 +31,7 @@ public class VersionFileInstaller implements VersionInstaller {
 		for (File file : versionScriptManager.availablesScripts(version))
 			if (numberOfScript(file) > lastInstalledScript) installScript(file);
 		
-		updateCurrentVersion();
+		updateInfoAboutCurrentVersion();
 	}
 	
 	@Override
@@ -38,7 +39,7 @@ public class VersionFileInstaller implements VersionInstaller {
 		for (Long version : versionManager.availablesVersions())
 			if (version > currentVersion) installAllScriptsOfVersion(version);
 		
-		updateCurrentVersion();
+		updateInfoAboutCurrentVersion();
 	}
 	
 	private Long numberOfScript(File file) {
@@ -48,28 +49,29 @@ public class VersionFileInstaller implements VersionInstaller {
 	private void installAllScriptsOfVersion(Long version) {
 		for (File file : versionScriptManager.availablesScripts(version))
 			installScript(file);
+		
+		updateInfoAboutCurrentVersion();
 	}
 
 	private void installScript(File file) {
 		String script = toString(file);
 		
-		for (String string : script.split("#")) {
-			String command = string.trim();
-			if (!command.isEmpty()) executeScript(file.getName(), command);
-		}
+		for (String command : script.split("#")) 
+			if (!command.trim().isEmpty()) executeScript(file.getName(), command);
 	}
 
 	private void executeScript(String scriptName, String command) {
 		try {
-			jdbcTemplate.execute(command);
+			jdbcTemplate.execute(command.replaceAll("\r\n", "\n"));
 		} catch (Exception exception) {
-			updateCurrentVersion();
+			updateInfoAboutCurrentVersion();
 			throw new RuntimeException("Error trying install script: " + scriptName);
 		}
 	}
 	
-	private void updateCurrentVersion() {
-		// TODO - Update Current Version in the Database
+	private void updateInfoAboutCurrentVersion() {
+		String sql = "insert into db_version (current_version, last_script, install_date) values (?, ?, ?)";
+		this.jdbcTemplate.update(sql, new Object[] { 1L , "script.sql", new Date() });
 	}
 
 	private String toString(File file) {

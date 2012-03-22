@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,6 +48,28 @@ public class ScriptManagerTest {
     @Test
     public void testLastVersionScript() {
     	assertEquals(new Long(3), versionScriptManager.newestScript(2L));
+    }
+    
+    @Test
+    public void testAvailablesFiles() throws IOException {
+    	File newVersion = testFolder.newFolder("4");
+    	File script1 = new File(newVersion, "1");
+    	File script2 = new File(newVersion, "2");
+    	
+    	script1.createNewFile();
+    	script2.createNewFile();
+    	
+    	Assert.assertArrayEquals(Arrays.asList(script1, script2).toArray(), versionScriptManager.availablesScripts(4L));
+    }
+    
+    @Test
+    public void testNameOfScriptsWithNotNumericValues() throws IOException {
+    	File newVersion = testFolder.newFolder("4");
+    	
+    	new File(newVersion, "0010_create_table_abc.sql").createNewFile();
+    	new File(newVersion, "0020_create_table_def.sql").createNewFile();
+    	
+    	assertEquals(new Long(20), versionScriptManager.newestScript(4L));
     }
 
 }

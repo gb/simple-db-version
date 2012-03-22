@@ -38,7 +38,7 @@ public class ScriptFileManager implements ScriptManager<File> {
 		List<Long> scripts = new ArrayList<Long>();
 		
 		for (File file : folder.listFiles()) 
-			if (file.isFile()) scripts.add(Long.parseLong(file.getName()));
+			if (file.isFile()) scripts.add(Long.parseLong(file.getName().replaceAll("[^\\d]", "")));
 
 		Collections.sort(scripts);
 		
