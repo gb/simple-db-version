@@ -2,7 +2,10 @@ package com.simpleDbVersion.domain;
 
 public interface VersionRepository {
 	
-	Long currentVersion();
+	Long currentVersionNumber();
 	Long lastScript();
+	Version currentVersion();
+	void updateInfoAboutCurrentVersion(Version version);
+	void executeScript(String sql);
 
 }

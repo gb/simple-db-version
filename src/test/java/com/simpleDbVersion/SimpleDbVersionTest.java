@@ -30,7 +30,7 @@ public class SimpleDbVersionTest {
 	
 	@Test
 	public void testIsOutOfVersionWhenHasScriptsAndNeverWasInstalled() {
-		when(versionRepository.currentVersion()).thenReturn(null);
+		when(versionRepository.currentVersionNumber()).thenReturn(null);
 		when(versionManager.newestVersion()).thenReturn(1L);
 		
 		assertTrue(simpleDbVersion.neverWasInstalled()); 
@@ -40,7 +40,7 @@ public class SimpleDbVersionTest {
 	
 	@Test
 	public void testIsOutOfVersionWhenTheresANewVersionAvailable() {
-		when(versionRepository.currentVersion()).thenReturn(1L);
+		when(versionRepository.currentVersionNumber()).thenReturn(1L);
 		when(versionManager.newestVersion()).thenReturn(2L);
 		
 		assertTrue(simpleDbVersion.versionIsOutdate());
@@ -50,7 +50,7 @@ public class SimpleDbVersionTest {
 	
 	@Test
 	public void testIsOutOfVersionWhenTheresANewScriptAvailable() {
-		when(versionRepository.currentVersion()).thenReturn(1L);
+		when(versionRepository.currentVersionNumber()).thenReturn(1L);
 		when(versionManager.newestVersion()).thenReturn(1L);
 		
 		when(versionRepository.lastScript()).thenReturn(5L);
@@ -62,7 +62,7 @@ public class SimpleDbVersionTest {
 	
 	@Test
 	public void testIsOutOfVersionWhenAllScriptsWereInstalled() {
-		when(versionRepository.currentVersion()).thenReturn(1L);
+		when(versionRepository.currentVersionNumber()).thenReturn(1L);
 		when(versionManager.newestVersion()).thenReturn(1L);
 		
 		when(versionRepository.lastScript()).thenReturn(6L);
@@ -75,7 +75,7 @@ public class SimpleDbVersionTest {
 	
 	@Test
 	public void testUpdateVersionShouldNOTBeInvokedWhenDbIsNOTOutOfVersion() {
-		when(versionRepository.currentVersion()).thenReturn(1L);
+		when(versionRepository.currentVersionNumber()).thenReturn(1L);
 		when(versionManager.newestVersion()).thenReturn(1L);
 		
 		simpleDbVersion.install();
@@ -86,7 +86,7 @@ public class SimpleDbVersionTest {
 	
 	@Test
 	public void testUpdateVersionShouldBeInvokedWhenDbIsOutOfVersion() {
-		when(versionRepository.currentVersion()).thenReturn(1L);
+		when(versionRepository.currentVersionNumber()).thenReturn(1L);
 		when(versionManager.newestVersion()).thenReturn(2L);
 		when(versionManager.availablesVersions()).thenReturn(Arrays.asList(1L, 2L));
 		

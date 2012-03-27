@@ -5,25 +5,28 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.io.IOUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.simpleDbVersion.domain.ScriptManager;
+import com.simpleDbVersion.domain.Version;
 import com.simpleDbVersion.domain.VersionInstaller;
 import com.simpleDbVersion.domain.VersionManager;
+import com.simpleDbVersion.domain.VersionRepository;
 
 public class VersionFileInstaller implements VersionInstaller {
 	
-	private final JdbcTemplate jdbcTemplate;
+	private final VersionRepository versionRepository;
 	private final VersionManager versionManager;
 	private final ScriptManager<File> versionScriptManager;
 	
-	public VersionFileInstaller(DataSource dataSource, VersionManager versionManager, ScriptManager<File> versionScriptManager) {
+	private Long version;
+	private Long currentScript;
+	private String currentFile;
+	
+	public VersionFileInstaller(VersionRepository versionRepository, VersionManager versionManager, ScriptManager<File> versionScriptManager) {
 		this.versionManager = versionManager;
 		this.versionScriptManager = versionScriptManager;
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		this.versionRepository = versionRepository;
 	}
 	
 	@Override
@@ -47,6 +50,8 @@ public class VersionFileInstaller implements VersionInstaller {
 	}
 	
 	private void installAllScriptsOfVersion(Long version) {
+		this.version = version;
+		
 		for (File file : versionScriptManager.availablesScripts(version))
 			installScript(file);
 		
@@ -54,6 +59,8 @@ public class VersionFileInstaller implements VersionInstaller {
 	}
 
 	private void installScript(File file) {
+		currentFile = file.getName();
+		currentScript = numberOfScript(file);
 		String script = toString(file);
 		
 		for (String command : script.split("#")) 
@@ -62,7 +69,7 @@ public class VersionFileInstaller implements VersionInstaller {
 
 	private void executeScript(String scriptName, String command) {
 		try {
-			jdbcTemplate.execute(command.replaceAll("\r\n", "\n"));
+			versionRepository.executeScript(command.replaceAll("\r\n", "\n"));
 		} catch (Exception exception) {
 			updateInfoAboutCurrentVersion();
 			throw new RuntimeException("Error trying install script: " + scriptName);
@@ -70,8 +77,8 @@ public class VersionFileInstaller implements VersionInstaller {
 	}
 	
 	private void updateInfoAboutCurrentVersion() {
-		String sql = "insert into db_version (current_version, last_script, install_date) values (?, ?, ?)";
-		this.jdbcTemplate.update(sql, new Object[] { 1L , "script.sql", new Date() });
+		Version newVersion = new Version(new Date(), version, currentScript, currentFile);
+		versionRepository.updateInfoAboutCurrentVersion(newVersion);
 	}
 
 	private String toString(File file) {
