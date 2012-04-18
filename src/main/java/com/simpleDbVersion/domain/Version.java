@@ -50,7 +50,8 @@ public class Version {
 	    			rs.getDate("install_date"), 
 	    			rs.getLong("version"), 
 	    			rs.getLong("current_script"), 
-	    			rs.getString("script_file")
+	    			rs.getString("last_script")
+//	    			rs.getString("script_file")
 	    	);
 	    	
 	        return version;

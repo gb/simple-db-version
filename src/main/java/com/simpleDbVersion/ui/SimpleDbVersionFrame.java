@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.simpleDbVersion.domain.SimpleDbVersion;
+import com.simpleDbVersion.domain.Version;
 
 public class SimpleDbVersionFrame extends JFrame {
 
@@ -59,12 +60,14 @@ public class SimpleDbVersionFrame extends JFrame {
 		btnInstall.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				simpleDbVersion.install();
+				System.out.println("INSTALOU " + simpleDbVersion.currentVersion());
 			}
 		});
 
 		btnCurrentVersion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, simpleDbVersion.currentVersion(), "Current Version", JOptionPane.INFORMATION_MESSAGE);
+				Version currentVersion = simpleDbVersion.currentVersion();
+				JOptionPane.showMessageDialog(null, currentVersion, "Current Version", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}
