@@ -13,11 +13,12 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.simpleDbVersion.infra.Logging;
+
 public class DBInstaller {
 
 	private final String scriptsPathName;
 
-	
 	public DBInstaller(String scriptsPathName) {
 		this.scriptsPathName = scriptsPathName;
 	}
@@ -85,7 +86,7 @@ public class DBInstaller {
 				throw new RuntimeException("Could not find resource: " + name);
 		}
 
-		System.out.println("Loading file: " + file + " from: " + file.getAbsolutePath());
+		Logging.info("Loading file: " + file + " from: " + file.getAbsolutePath());
 
 		return file;
 	}
@@ -103,23 +104,5 @@ public class DBInstaller {
 
 		return null;
 	}
-
-	//	private File findResource(String name) {
-	//		try {
-	//			URL resource = DBInstaller.class.getResource(name);
-	//			
-	//			if (resource == null)
-	//				throw new RuntimeException("Could not find resource: " + name);
-	//			
-	//			return new File(resource.toURI());
-	////			URI uri = resource.toURI();
-	////			
-	////			File file = new File(uri);
-	////
-	////			return file;
-	//		} catch (URISyntaxException e) {
-	//			throw new RuntimeException("Could not find resource: " + name);
-	//		}
-	//	}
 
 }

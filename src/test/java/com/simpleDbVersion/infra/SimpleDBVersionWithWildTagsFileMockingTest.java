@@ -61,10 +61,10 @@ public class SimpleDBVersionWithWildTagsFileMockingTest {
 //		Mockito.when(file.getPath()).thenReturn("c:\\");
 //		String fileContent = IOUtils.toString(new FileInputStream(file));
 		
-		when(versionInstaller.toString((File)Mockito.anyObject())).thenReturn("Hi. I am the file content");
-		
-		Assert.assertEquals("Hi. I am the file content" , versionInstaller.toString(null));
-		
+//		when(versionInstaller.toString((File)Mockito.anyObject())).thenReturn("Hi. I am the file content");
+//		
+//		Assert.assertEquals("Hi. I am the file content" , versionInstaller.toString(null));
+//		
 		simpleDbVersion.install();
 	}
 }

@@ -72,7 +72,7 @@ public class VersionDAO implements VersionRepository {
 	}
 
 	private void error(EmptyResultDataAccessException e, String fieldName) {
-		System.err.println(String.format("<Error retrieving %s> %s ",fieldName, e.getMessage()));
+		Logging.warning(String.format("<Error retrieving %s> %s ",fieldName, e.getMessage()));
 	}
 	
 	private static final String WHERE_MAX_INSTALL_DATE = "WHERE INSTALL_DATE = (SELECT MAX(INSTALL_DATE) FROM DB_VERSION)";

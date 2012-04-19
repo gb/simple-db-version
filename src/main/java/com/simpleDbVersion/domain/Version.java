@@ -48,6 +48,7 @@ public class Version {
 	
 	private String format(Date date) {
 		if (date == null) return "";
+		
 		return dateFormatter.format(date);
 	}
 	

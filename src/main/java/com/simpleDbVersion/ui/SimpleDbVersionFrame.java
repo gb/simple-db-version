@@ -11,15 +11,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import com.simpleDbVersion.commandLine.CommandLineAppMain;
 import com.simpleDbVersion.domain.SimpleDbVersion;
 import com.simpleDbVersion.domain.Version;
+import com.simpleDbVersion.domain.factory.SimpleDbVersionFactory;
+import com.simpleDbVersion.infra.Logging;
 
 public class SimpleDbVersionFrame extends JFrame {
 
 	private static final long serialVersionUID = 2235151289954265614L;
-	
+
 	private final SimpleDbVersion simpleDbVersion;
 	private JButton btnInstall;
 	private JButton btnCurrentVersion;
@@ -44,7 +46,7 @@ public class SimpleDbVersionFrame extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(layout);
 		layout.setAlignment(FlowLayout.TRAILING);
-		
+
 		createAndBindButtons();
 
 		panel.add(btnInstall);
@@ -57,11 +59,11 @@ public class SimpleDbVersionFrame extends JFrame {
 	private void createAndBindButtons() {
 		btnInstall = new JButton("Install");
 		btnCurrentVersion = new JButton("Current Version");
-		
+
 		btnInstall.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				simpleDbVersion.install();
-				System.out.println("INSTALOU " + simpleDbVersion.currentVersion());
+				Logging.info("Installed, current version : " + simpleDbVersion.currentVersion());
 			}
 		});
 
@@ -69,13 +71,21 @@ public class SimpleDbVersionFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Version currentVersion = simpleDbVersion.currentVersion();
 				JOptionPane.showMessageDialog(null, currentVersion, "Current Version", JOptionPane.INFORMATION_MESSAGE);
+				Logging.info("Current version : " + currentVersion);
 			}
 		});
 	}
-	
+
 	public static void main(String[] args) {
-		SimpleDbVersion simpleDbVersion = CommandLineAppMain.getSimpleDbVersion(args);
-		new SimpleDbVersionFrame(simpleDbVersion);
+		final SimpleDbVersion simpleDbVersion = SimpleDbVersionFactory.createWith(args);
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new SimpleDbVersionFrame(simpleDbVersion);
+			}
+		});
+
 	}
 
 }

@@ -45,8 +45,6 @@ public class VersionFileInstaller implements VersionInstaller {
 		for (File file : versionScriptManager.availablesScripts(version))
 			if (numberOfScript(file) > lastInstalledScript)
 				installScript(file);
-
-		//updateInfoAboutCurrentVersion();
 	}
 
 	@Override
@@ -54,8 +52,6 @@ public class VersionFileInstaller implements VersionInstaller {
 		for (Long version : versionManager.availablesVersions())
 			if (currentVersion == null || version > currentVersion)
 				installAllScriptsOfVersion(version);
-
-		//updateInfoAboutCurrentVersion();
 	}
 
 	private Long numberOfScript(File file) {
@@ -67,13 +63,11 @@ public class VersionFileInstaller implements VersionInstaller {
 
 		for (File file : versionScriptManager.availablesScripts(version))
 			installScript(file);
-
-		//		updateInfoAboutCurrentVersion();
 	}
 
 	private void installScript(File file) {
 		currentFile = file.getName();
-		System.out.println("Runing " + currentFile);
+		Logging.info("Runing " + currentFile);
 		currentScript = numberOfScript(file);
 		String script = toString(file);
 
@@ -88,7 +82,6 @@ public class VersionFileInstaller implements VersionInstaller {
 		try {
 			command = replaceWildTags(command);
 			versionRepository.executeScript(command.replaceAll("\r\n", "\n"));
-			//updateInfoAboutCurrentVersion();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			throw new RuntimeException("Error trying install script: " + scriptName);
@@ -112,11 +105,11 @@ public class VersionFileInstaller implements VersionInstaller {
 
 	// FIXME exposing method for mocking capabilities /visibility
 
-	protected Map<String, String> getWildTags() {
+	private Map<String, String> getWildTags() {
 		return wildTags;
 	}
 
-	protected String toString(File file) {
+	private String toString(File file) {
 		try {
 			return IOUtils.toString(new FileInputStream(file));
 		} catch (IOException exception) {
