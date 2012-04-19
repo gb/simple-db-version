@@ -1,24 +1,15 @@
 package com.simpleDbVersion.infra;
 
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -27,10 +18,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.simpleDbVersion.domain.ScriptManager;
 import com.simpleDbVersion.domain.SimpleDbVersion;
-import com.simpleDbVersion.domain.VersionInstaller;
 import com.simpleDbVersion.domain.VersionManager;
 import com.simpleDbVersion.domain.VersionRepository;
-import com.simpleDbVersion.infra.VersionFileInstaller;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleDBVersionWithWildTagsFileMockingTest {

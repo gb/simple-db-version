@@ -2,11 +2,14 @@ package com.simpleDbVersion.domain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
 public class Version {
+	
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private final Date installDate;
 	private final Long currentVersion;
@@ -40,7 +43,12 @@ public class Version {
 	public String toString() {
 		return "Current Version: " + currentVersion + "\n" +
 			   "Current Script: " + lastScript + "\n" +
-			   "Install Date: " + installDate;
+			   "Install Date: " + format(installDate);
+	}
+	
+	private String format(Date date) {
+		if (date == null) return "";
+		return dateFormatter.format(date);
 	}
 	
 	public static final class VersionMapper implements RowMapper<Version> {
@@ -51,7 +59,6 @@ public class Version {
 	    			rs.getLong("version"), 
 	    			rs.getLong("current_script"), 
 	    			rs.getString("last_script")
-//	    			rs.getString("script_file")
 	    	);
 	    	
 	        return version;

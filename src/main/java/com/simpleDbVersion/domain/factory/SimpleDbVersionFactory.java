@@ -30,7 +30,7 @@ public class SimpleDbVersionFactory {
 		VersionRepository repository = new VersionDAO(dataSource);
 		VersionManager versionManager = new VersionFileManager(installDir);
 		ScriptManager<File> versionScriptManager = new ScriptFileManager(installDir);
-		VersionInstaller versionInstaller = new VersionFileInstaller(repository, versionManager, versionScriptManager);
+		VersionInstaller versionInstaller = new VersionFileInstaller(repository, versionManager, versionScriptManager, wildTags);
 		
 		return new SimpleDbVersion(repository, versionManager, versionScriptManager, versionInstaller);
 	}

@@ -1,11 +1,6 @@
 package com.simpleDbVersion;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.simpleDbVersion.infra.VersionDAO;
 
 public class VersionDAOTest {
 

@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.simpleDbVersion.commandLine.CommandLineAppMain;
 import com.simpleDbVersion.domain.SimpleDbVersion;
 import com.simpleDbVersion.domain.Version;
 
@@ -73,7 +74,8 @@ public class SimpleDbVersionFrame extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new SimpleDbVersionFrame(null);
+		SimpleDbVersion simpleDbVersion = CommandLineAppMain.getSimpleDbVersion(args);
+		new SimpleDbVersionFrame(simpleDbVersion);
 	}
 
 }

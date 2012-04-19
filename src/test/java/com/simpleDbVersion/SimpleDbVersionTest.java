@@ -1,18 +1,24 @@
 package com.simpleDbVersion;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.simpleDbVersion.domain.ScriptManager;
 import com.simpleDbVersion.domain.SimpleDbVersion;
 import com.simpleDbVersion.domain.VersionInstaller;
 import com.simpleDbVersion.domain.VersionManager;
 import com.simpleDbVersion.domain.VersionRepository;
-import com.simpleDbVersion.domain.ScriptManager;
 
 public class SimpleDbVersionTest {
 	

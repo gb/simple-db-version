@@ -1,3 +1,16 @@
 ** SIMPLE DB VERSION **
 
 A minimalist way of put your SQL scripts under version control.
+
+Notice:
+
+Before running any installation scripts, a database should be created like follows:
+
+CREATE TABLE DB_VERSION (
+       install_date TIMESTAMP,
+       version NUMBER, 
+       current_script NUMBER, 
+       last_script VARCHAR(1000)
+);
+
+(ps: the table name and its fields should be exactly the same).
