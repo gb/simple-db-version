@@ -72,6 +72,7 @@ public class DBInstaller {
 			properties.load(new FileInputStream(propertiesFileName));
 			return properties;
 		} catch (IOException e) {
+			Logging.warning("Error loading properties from " + propertiesFileName + " : " + e.getMessage());
 			return null;
 		}
 	}
@@ -100,6 +101,7 @@ public class DBInstaller {
 
 			return new File(resource.toURI());
 		} catch (URISyntaxException e) {
+			Logging.warning("Error loading resource " + name + " : " + e.getMessage());
 		}
 
 		return null;
