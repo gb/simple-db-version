@@ -53,8 +53,8 @@ public class ScriptManagerTest {
     @Test
     public void testAvailablesFiles() throws IOException {
     	File newVersion = testFolder.newFolder("4");
-    	File script1 = new File(newVersion, "1");
-    	File script2 = new File(newVersion, "2");
+    	File script1 = new File(newVersion, "1.sql");
+    	File script2 = new File(newVersion, "2.sql");
     	
     	script1.createNewFile();
     	script2.createNewFile();
@@ -66,11 +66,11 @@ public class ScriptManagerTest {
     public void shouldReturnTheAvailablesFilesOrderedByScriptNumber() throws IOException {
     	File newVersion = testFolder.newFolder("5");
     	
-    	File script5 = new File(newVersion, "5");
-    	File script4 = new File(newVersion, "4");
-    	File script1 = new File(newVersion, "1");
-    	File script3 = new File(newVersion, "3");
-    	File script2 = new File(newVersion, "2");
+    	File script5 = new File(newVersion, "5.sql");
+    	File script4 = new File(newVersion, "4.sql");
+    	File script1 = new File(newVersion, "1.sql");
+    	File script3 = new File(newVersion, "3.sql");
+    	File script2 = new File(newVersion, "2.sql");
     	
     	script5.createNewFile();
     	script4.createNewFile();
@@ -91,6 +91,28 @@ public class ScriptManagerTest {
     	new File(newVersion, "0020_create_table_def.sql").createNewFile();
     	
     	assertEquals(new Long(20), versionScriptManager.newestScript(4L));
+    }
+    
+    @Test
+    public void testThatOnlySqlFilesAreAllowed() throws IOException {
+    	File newVersion = testFolder.newFolder("4");
+    	
+    	new File(newVersion, ".svn").mkdir();
+    	new File(newVersion, ".git").mkdir();
+    	new File(newVersion, ".ignore").mkdir();
+    	
+    	File script1 = new File(newVersion, "0010_create_table_abc.sql");
+    	File script2 = new File(newVersion, "0020_create_table_def.sql");
+    	File notAScript = new File(newVersion, "0030_create_table_def.txt");
+    	File anImage = new File(newVersion, "0031_pictures.png");
+    	
+		script1.createNewFile();
+		script2.createNewFile();
+		notAScript.createNewFile();
+		anImage.createNewFile();
+    	
+    	Assert.assertArrayEquals(Arrays.asList(script1, script2).toArray(), versionScriptManager.availablesScripts(4L));
+    
     }
 
 }

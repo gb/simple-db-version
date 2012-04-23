@@ -1,12 +1,8 @@
 package com.simpleDbVersion.installer;
 
-import java.io.File;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import com.simpleDbVersion.installer.DBInstaller;
 
 public class DBInstallerWithDirectoriesTest {
 	
@@ -21,8 +17,7 @@ public class DBInstallerWithDirectoriesTest {
 		error.expectMessage("Could not find resource: scripts");
 		error.expect(RuntimeException.class);
 		
-		@SuppressWarnings("unused")
-		final File file = installer.findScriptsPath();
+		installer.findScriptsPath();
 	}
 	
 	@Test
@@ -32,8 +27,7 @@ public class DBInstallerWithDirectoriesTest {
 		error.expectMessage("Could not find resource: myScripts/");
 		error.expect(RuntimeException.class);
 		
-		@SuppressWarnings("unused")
-		final File file = installer.findScriptsPath();
+		installer.findScriptsPath();
 	}
 	
 	@Test
@@ -43,8 +37,7 @@ public class DBInstallerWithDirectoriesTest {
 		error.expectMessage("Could not find resource: db.properties");
 		error.expect(RuntimeException.class);
 		
-		@SuppressWarnings("unused")
-		final File file = installer.findPropertiesFile();
+		installer.findPropertiesFile();
 	}
 	
 

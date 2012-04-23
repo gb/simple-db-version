@@ -41,5 +41,22 @@ public class VersionManagerTest {
     public void maxVersionTest() {
     	assertEquals(new Long(3), versionFileManager.newestVersion());
     }
+    
+    @Test
+    public void onlyNumericFoldersAreAllowed(){
+    	testFolder.newFolder("10");
+    	testFolder.newFolder("4");
+    	testFolder.newFolder(".svn");
+    	testFolder.newFolder(".git");
+    	testFolder.newFolder("newScripts");
+    	testFolder.newFolder("0new");
+    	testFolder.newFolder("new10");
+    	
+    	versionFileManager = new VersionFileManager(testFolder.getRoot());
+    	
+    	List<Long> expectedVersions = Arrays.asList(1L, 2L, 3L, 4L, 10L);
+    	
+    	assertEquals(expectedVersions, versionFileManager.availablesVersions());
+    }
 
 }

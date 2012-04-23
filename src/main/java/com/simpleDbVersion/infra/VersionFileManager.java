@@ -1,6 +1,7 @@
 package com.simpleDbVersion.infra;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,9 +27,17 @@ public class VersionFileManager implements VersionManager {
 	}
 
 	private void loadVersions(File scriptsDir) {
-		for (File file : scriptsDir.listFiles()) addVersion(file);
+		for (File file : scriptsDir.listFiles(onlyNumericFolders)) addVersion(file);
 		Collections.sort(versions);
 	}
+	
+	private FileFilter onlyNumericFolders = new FileFilter() {
+
+		@Override
+		public boolean accept(File pathname) {
+			return pathname.getName().matches("[0-9]*");
+		}
+	};
 	
 	private void addVersion(File file) {
 		if (file.isDirectory()) versions.add(getVersionName(file));
